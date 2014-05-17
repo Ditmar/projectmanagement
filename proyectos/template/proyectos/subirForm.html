@@ -1,0 +1,37 @@
+<script>
+	jQuery(document).ready(function($) {
+		
+		$("#formSubir").submit(function(event) {
+			console.log($(this).serializeArray())
+			var data=$(this).serializeObject()
+			//var archi=$("#id_archivo").files
+			 var archi=document.getElementById('id_archivo').files[0]
+			data["archivo"]=archi
+			//data["archivo"].push(archi|| '');
+			console.log(data)
+			$.ajax({
+				url: '/proyectos/SubirArchivo/',
+				type: 'POST',
+				data: data,
+			})
+			.done(function(info) {
+				alert("OK")
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+			return false;
+		});
+	});
+</script>
+<div>
+	<form action="" method="post" id="formSubir" enctype="multipart/form-data" >
+		{%csrf_token%}
+		{{form}}
+		<input type="submit" value="Enviar"/>
+	</form>
+</div>

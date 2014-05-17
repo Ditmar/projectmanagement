@@ -1,0 +1,40 @@
+<script>
+	jQuery(document).ready(function($) {
+		$( "form #id_formNumber" ).spinner({
+			step: 0.5,
+      		numberFormat: "n"
+		});
+		$( "div #editarFormSeg" ).submit(function(event) {
+			var values=$(this).serializeObject()
+			var id=$()
+			var idd=$(this).attr("idseg");
+			$.ajax({
+				url: '/proyectos/editarhistorial/'+idd+'/',
+				type: 'POST',
+				data: values,
+			})
+			.done(function(response) {
+				if(response.result){
+					var idreq=$("#SegForm").attr('reqID');
+					asynccallSeg($("#requerimientoHistoria"),'/proyectos/reqhistory/'+idreq+'/',"GET",{},true)
+				}
+					
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+			return false;
+		});
+	});
+</script>
+<div>
+	<form action="" method="POST" id="editarFormSeg" idseg={{idseg}}>
+		{%csrf_token%}
+		{{form}}
+		<input type="submit" value="Terminar edición"/>
+	</form>
+</div>

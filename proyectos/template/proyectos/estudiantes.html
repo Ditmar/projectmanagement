@@ -1,0 +1,35 @@
+<script>
+	jQuery(document).ready(function($) {
+		$("#form_reg_estudiante").submit(function(event) {
+			var datos=$(this).serializeObject()
+			console.log(datos)
+			$.ajax({
+				url: '/proyectos/estudiante/',
+				type: 'POST',
+				data:datos,
+			})
+			.done(function(html) {
+				$("#lista_form_estudiante").html(html)
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+			return false;
+		});
+	});
+</script>
+<div>
+	<form action="" method="post" id="form_reg_estudiante">
+		{% csrf_token%}
+		{{form}}
+    	<input type="submit" value="Enviar"/>
+	</form>
+	<div id="lista_form_estudiante">
+
+	</div>
+</div>

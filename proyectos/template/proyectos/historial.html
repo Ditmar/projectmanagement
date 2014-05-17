@@ -1,0 +1,115 @@
+<script>
+jQuery(document).ready(function($) {
+	$( "#id_nota" ).spinner({
+		step: 0.5,
+      	numberFormat: "n"
+	});
+	$(".historia_seg #Editarseg").each(function() {
+		$(this).click(function(event) {
+			event.preventDefault()
+			var padrelista=$(this).parent().parent()
+			var idseg=$(this).attr("idSeg");
+			asynccallSeg(padrelista,'/proyectos/editarhistorial/'+idseg+'/',"GET",{},true)
+			//console.log($(this).parent().parent())
+		});
+	});
+	$(".historia_seg #borrarseg").each(function() {
+		 $(this).click(function(event) {
+		 	event.preventDefault()
+		 	var idseg=$(this).attr("idSeg");
+			$("#mensajeConfirmacionSeg").dialog({
+      			autoOpen: false,
+      			title:"Borrar Seguimiento",
+      			modal:true,
+      			width:450,
+      			show: {
+        			effect: "blind",
+        			duration: 500
+      			},
+      			hide: {
+        			effect: "explode",
+        			duration: 500
+      			},
+      			buttons: {
+        			"Delete all items": function() {
+         					$( this ).dialog( "close" );
+         					
+							asynccallSeg($("#requerimientoHistoria"),'/proyectos/borrarSeq/'+idseg+'/',"GET",{},false)
+							
+        				},
+        			Cancel: function() {
+         	 				$( this ).dialog( "close" );
+        				}
+      			}
+    		});
+    		$("#mensajeConfirmacionSeg").dialog("open");
+		 });
+	});
+	$("#Editarseg").click(function(event) {
+		event.preventDefault();
+
+	});
+	$("#SegForm").submit(function(event) {
+		console.log("Envia")
+		var idreq=$(this).attr('reqID');
+		var datos=$(this).serializeObject()
+		asynccallSeg($("#requerimientoHistoria"),'/proyectos/reqhistory/'+idreq+'/',"POST",datos,true)
+		return false;
+	});
+	asynccallSeg=function(container,url,method,datos,type)
+	{
+		$.ajax({
+			url: url,
+			type: method,
+			data: datos,
+		})
+		.done(function(html) {
+			if(type){
+				container.html(html)		
+			}else{
+				var idreq=$("#SegForm").attr('reqID');
+				asynccallSeg($("#requerimientoHistoria"),'/proyectos/reqhistory/'+idreq+'/',"GET",{},true)
+			}
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+	}
+});
+</script>
+<div class="proyectoInformacion">
+	<div class="objetivoProyecto">
+		{{req.descripcion}}
+
+	</div>
+	<div class="procentaje">
+		<ul>
+			<li>Avance: {{req.nota}}%</li>
+			<li>Ponderación{{req.criterio}}%</li>
+		</ul>
+	</div>
+</div>
+<div class="AddSeguimiento">
+	<form action="http://localhost:7474/proyectos/reqhistory/1/" method="POST" id="SegForm" reqID="{{req.id}}">
+		{%csrf_token%}
+		{{form}}
+		<input type="submit" value="enviar"/>
+	</form>
+</div>
+<ul class="historia_seg">
+	{%for item in lista%}
+		<li>
+			<div>{{item.observacion}}</div>
+			<div>{{item.fechas}}</div>
+			<div>{{item.nota}}</div>
+			<div><a href="" id="borrarseg" idSeg="{{item.id}}">Borrar</a></div>
+			<div><a href="" id="Editarseg" idSeg="{{item.id}}">Editar</a></div>
+		</li>
+	{%endfor%}
+</ul>
+<div id="mensajeConfirmacionSeg">
+	¿Desea Borrar El requerimiento?
+</div>

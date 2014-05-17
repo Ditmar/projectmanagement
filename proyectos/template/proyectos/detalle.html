@@ -1,0 +1,276 @@
+<script>
+	jQuery(document).ready(function($) {
+		var buttonEreaser={}
+		$(".opcionesReq #historial").click(function(event) {
+			event.preventDefault()
+			var idreq=$(this).attr("idreq");
+			AsincCallForm($("#requerimientoHistoria"),"/proyectos/reqhistory/"+idreq+"/","GET",{})
+			$("#requerimientoHistoria").dialog( "open" );
+		});
+		$(".opcionesReq #borrarReq").each( function(index, val) {
+			$(this).click(function(event) {
+				
+				event.preventDefault()
+				buttonEreaser=$(this)
+				var idreq=buttonEreaser.attr("idreq");
+				console.log(idreq)
+				//console.log($("#mensajeConfirmacion"))
+				$("#mensajeConfirmacion").dialog({
+      				autoOpen: false,
+      				title:"Borrar Requerimiento",
+      				modal:true,
+      				width:450,
+      				show: {
+        				effect: "blind",
+        				duration: 500
+      				},
+      				hide: {
+        				effect: "explode",
+        				duration: 500
+      			},
+      		buttons: {
+        	"Delete all items": function() {
+          $( this ).dialog( "close" );
+          	var idreq=buttonEreaser.attr("idreq");
+          	console.log(idreq)
+			AsincCallForm(false,"/proyectos/borrarReq/"+idreq+"/","GET",{})
+        	},
+        	Cancel: function() {
+         	 $( this ).dialog( "close" );
+        }
+      }
+    	});
+				$("#mensajeConfirmacion").dialog( "open" );
+		});
+			
+		});
+		$(".opcionesReq #editarReq").click(function(event) {
+			event.preventDefault();
+			var idreq=$(this).attr("idreq");
+			AsincCallForm($("#requerimientosEdit"),"/proyectos/editarreq/"+idreq+"/","GET",{})
+			$("#requerimientosEdit").dialog( "open" );
+		});
+		$("#subir_archivo").click(function(event) {
+			event.preventDefault();
+			AsincCallForm($("#form_archivo"),"/proyectos/SubirArchivo/","GET",{})
+			$("#form_archivo").dialog( "open" );
+		});
+		
+    	$("#requerimientoHistoria").dialog({
+      		autoOpen: false,
+      		modal:true,
+      		width:600,
+      		height:500,
+      		title:"Historial",
+      		show: {
+        		effect: "blind",
+        		duration: 500
+      		},
+      		hide: {
+        		effect: "explode",
+        		duration: 500
+      		}
+    	});
+		$("#form_archivo").dialog({
+      		autoOpen: false,
+      		modal:true,
+      		width:450,
+      		show: {
+        		effect: "blind",
+        		duration: 500
+      		},
+      		hide: {
+        		effect: "explode",
+        		duration: 500
+      		}
+    	});
+    	$("#requerimientosEdit").dialog({
+      		autoOpen: false,
+      		modal:true,
+      		width:400,
+      		show: {
+        		effect: "blind",
+        		duration: 500
+      		},
+      		hide: {
+        		effect: "explode",
+        		duration: 500
+      		}
+    	});
+		$("#formEstudiante").dialog({
+      		autoOpen: false,
+      		modal:true,
+      		show: {
+        		effect: "blind",
+        		duration: 500
+      		},
+      		hide: {
+        		effect: "explode",
+        		duration: 500
+      		}
+    	});
+		$("#addEstudiante").click(function(event) {
+			event.preventDefault();
+			AsincCallForm($("#formEstudiante"),"/proyectos/buscarEstudiante/","GET",{})
+			$("#formEstudiante").dialog( "open" );
+		});
+		agregarEstudiante=function(id)
+		{
+			$("#formEstudiante").dialog( "close" );
+			AsincCallForm(false,"/proyectos/addEstudianteProyecto/"+id+"/"+$("#add_req").attr("idPro")+"/","GET",{})
+		}
+		AsincCallForm=function(obj,url,method,params)
+		{
+
+			$.ajax({
+				url: url,
+				type: method,
+				data: params,
+			})
+			.done(function(html) {
+				if (obj){
+						obj.html(html)		
+				}else{
+					autocallback()
+				}
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+		}
+		$("#add_req").click(function(event) {
+			event.preventDefault()
+			var id=$(this).attr("idPro");
+			$.ajax({
+				url: '/proyectos/agregarReq/'+id+"/",
+				type: 'GET',
+				data: {},
+			})
+			.done(function(html) {
+				$("#form_add").html(html)
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+		});
+		$(".estudiantesLista #borrarRelacion").click(function(event) {
+			event.preventDefault()
+			var id=$(this).attr("idEs");
+			AsincCallForm(false,"/proyectos/BorrarRel/"+id+"/"+$("#add_req").attr("idPro")+"/","GET",{})
+		});
+		autocallback=function(){
+			var id=$("#add_req").attr("idpro");
+			$("#listar").html("")
+			$.ajax({
+				url: '/proyectos/dameproyecto/'+id+"/",
+				type: 'GET',
+				data: {},
+			})
+			.done(function(html) {
+				$("#buscarPro").html(html)
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+		}
+	});
+</script>
+<div>
+	<ul>
+		<li class="proyectos_list">
+			<div class="titulo">
+
+				<h2>{{item.titulo}}</h2>   {{item.fecha}}	{{item.id}}	
+			</div>
+			<div class="columna1">
+				<h3>Objetivos</h3>
+				{{item.objetivo}}
+			</div>
+			<div class="columna2">
+				<h3>Integrantes</h3>
+				<ul class="estudiantesLista">
+				{%for es in item.estudiantes.all%}
+					<li>{{es.Nombres}} {{es.Apellidos}} <a href="" id="borrarRelacion" idEs="{{es.id}}">Borrar</a></li>
+				{%endfor%}
+				</ul>
+				<a href="" id="addEstudiante">Agregar Estudiante</a>
+			</div>
+			<div class="columna3">
+				<a href="" id="ver" typo="mostrar">Ver nota</a>
+				<div id="nota">
+					{{item.notaTotal}}
+				</div>	
+			</div>
+			<div>
+				<h3>Requerimientos</h3>
+				<ul class="requerimientos">
+					{%for req in item.requerimientos_set.all%}
+					<li>
+						{{req.nota}}
+					</li>
+					{%endfor%}
+					
+				</ul>
+			</div>
+			<div>
+				<a href="/proyectos/SubirArchivo/" target="_blank" onClick="window.open(this.href, this.target, 'width=300,height=400'); return false;">Subir Archivo</a>
+			</div>
+			<div>
+				<h3>Archivos</h3>
+				<ul>
+					{%for files in item.archivos_set.all%}
+					<li><a href="http://localhost:7474/media/{{files.archivo}}">{{files.archivo}}</a> {{files.fecha}}</li>
+					{%endfor%}
+				</ul>
+			</div>
+		</li>
+		<li class="proyectos_list">
+			<h2>Lista de Requerimientos</h2>
+			Opciones
+			<ul>
+				<li><a href="#" id="add_req" idPro="{{item.id}}">Agregar Nuevo</a></li>
+				<li>Total ponderado {{ponderado}}</li>
+			</ul>
+			<div id="form_add"></div>
+			<ul>
+				{%for req in item.requerimientos_set.all%}
+					<li class="{% cycle 'elemento1' 'elemento2' 'elemento3' 'elemento4' 'elemento5' 'elemento6' 'elemento7' %}">
+						<div class="descripcionReq">{{req.descripcion}}</div>
+						<div class="notaReq">{{req.nota}}%</div>
+						<div class="criterioReq">{{req.criterio}}</div>
+						<ul class="opcionesReq">
+							<li><a href="" id="borrarReq" idreq="{{req.id}}"></a></li>
+						
+							<li><a href="" id="historial" idreq="{{req.id}}"></a></li>
+							<li><a href="" id="editarReq" idreq="{{req.id}}"></a></li>
+						</ul>	
+					</li>
+					{%endfor%}
+			</ul>
+		</li>
+	</ul>
+</div>
+<div id="requerimientosEdit">
+
+</div>
+<div id="requerimientoHistoria">
+
+</div>
+<div id="formEstudiante">
+
+</div>
+<div id="mensajeConfirmacion">
+	¿Desea Borrar El requerimiento?
+</div>

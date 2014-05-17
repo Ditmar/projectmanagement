@@ -1,0 +1,32 @@
+<script>
+	jQuery(document).ready(function($) {
+		$("#logeo").submit(function(event) {
+			var datos=$(this).serializeObject()
+			console.log(datos)
+		$.ajax({
+			url: '/usuario/login/',
+			type: 'POST',
+			data: datos,
+		})
+		.done(function(serverresponse) {
+			if(serverresponse.type==undefined &&serverresponse){
+					callback(serverresponse)
+				}
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		return false;
+		});
+	});
+</script>
+<div>
+	<form action="" method="POST" id="logeo">
+		{% csrf_token %}
+		{{form.as_ul}}
+		<input type="submit" value="Enviar" />
+	</form>
+</div>

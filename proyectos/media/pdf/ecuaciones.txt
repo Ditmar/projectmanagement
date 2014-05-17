@@ -1,0 +1,150 @@
+(01)	alimento= INTEG (
+		crecimiento-consumo,
+			50000)
+	Units: **undefined**
+	
+(02)	conejos= INTEG (
+		crecimiento vegetativo-muerte natural-muerte por falta de alimento,
+			2)
+	Units: **undefined**
+	
+(03)	conejos sin comida=
+		deficit/consumo por conejo
+	Units: **undefined**
+	
+(04)	consumo=
+		IF THEN ELSE(consumo total>alimento, alimento-10, consumo total )
+	Units: **undefined**
+	
+(05)	consumo por conejo=
+		120
+	Units: **undefined**
+	
+(06)	consumo total=
+		conejos*consumo por conejo
+	Units: **undefined**
+	
+(07)	crecimiento=
+		alimento*periodo de crecimiento
+	Units: **undefined**
+	
+(08)	crecimiento vegetativo=
+		conejos*tasa de crecimiento
+	Units: **undefined**
+	
+(09)	deficit=
+		IF THEN ELSE(consumo total>alimento, consumo total-alimento, 0 )
+	Units: **undefined**
+	
+(10)	FINAL TIME  = 24
+	Units: meses
+	The final time for the simulation.
+
+(11)	INITIAL TIME  = 0
+	Units: meses
+	The initial time for the simulation.
+
+(12)	muerte natural=
+		conejos/tiempo de vida
+	Units: **undefined**
+	
+(13)	muerte por falta de alimento=
+		IF THEN ELSE(conejos sin comida>conejos,conejos, conejos sin comida )
+	Units: **undefined**
+	
+(14)	periodo de crecimiento=
+		0.0002
+	Units: **undefined**
+	
+(15)	SAVEPER  = 
+       TIME STEP 
+	Units: meses [0,?]
+	The frequency with which output is stored.
+
+(16)	tasa de crecimiento=
+		0.5
+	Units: **undefined**
+	
+(17)	tiempo de vida=
+		48
+	Units: **undefined**
+	
+(18)	TIME STEP  = 1
+	Units: meses [0,?]
+	The time step for the simulation.
+
+(01)	alimento= INTEG (
+		crecimiento-consumo,
+			50000)
+	Units: **undefined**
+	
+(02)	conejos= INTEG (
+		crecimiento vegetativo-muerte natural-muerte por falta de alimento,
+			2)
+	Units: **undefined**
+	
+(03)	conejos sin comida=
+		deficit/consumo por conejo
+	Units: **undefined**
+	
+(04)	consumo=
+		IF THEN ELSE(consumo total>alimento, alimento-10, consumo total )
+	Units: **undefined**
+	
+(05)	consumo por conejo=
+		120
+	Units: **undefined**
+	
+(06)	consumo total=
+		conejos*consumo por conejo
+	Units: **undefined**
+	
+(07)	crecimiento=
+		alimento*periodo de crecimiento
+	Units: **undefined**
+	
+(08)	crecimiento vegetativo=
+		conejos*tasa de crecimiento
+	Units: **undefined**
+	
+(09)	deficit=
+		IF THEN ELSE(consumo total>alimento, consumo total-alimento, 0 )
+	Units: **undefined**
+	
+(10)	FINAL TIME  = 24
+	Units: meses
+	The final time for the simulation.
+
+(11)	INITIAL TIME  = 0
+	Units: meses
+	The initial time for the simulation.
+
+(12)	muerte natural=
+		conejos/tiempo de vida
+	Units: **undefined**
+	
+(13)	muerte por falta de alimento=
+		IF THEN ELSE(conejos sin comida>conejos,conejos, conejos sin comida )
+	Units: **undefined**
+	
+(14)	periodo de crecimiento=
+		0.0002
+	Units: **undefined**
+	
+(15)	SAVEPER  = 
+       TIME STEP 
+	Units: meses [0,?]
+	The frequency with which output is stored.
+
+(16)	tasa de crecimiento=
+		0.5
+	Units: **undefined**
+	
+(17)	tiempo de vida=
+		48
+	Units: **undefined**
+	
+(18)	TIME STEP  = 1
+	Units: meses [0,?]
+	The time step for the simulation.
+

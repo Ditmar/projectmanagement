@@ -1,0 +1,78 @@
+<script>
+	jQuery(document).ready(function($) {
+		llamdaAsincrona("/proyectos/buscarEstudiante/",$("#Buscar"))
+		$("#modificarProyecto").click(function(event){
+			var url=$(this).attr("href");
+			$.ajax({
+				url: url,
+				type: 'GET',
+				data: {},
+			})
+			.done(function(form) {
+				$("#datahtml").html(form)
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+		});
+		$("#LinkAgregar").click(function(event) {
+			event.preventDefault()
+			$( "#Buscar" ).dialog("open")
+		});
+
+		$( "#Buscar" ).dialog({
+      		autoOpen: false,
+      		height: 300,
+      		width: 350,
+      		modal: true,
+      		buttons:
+      		{
+      			"Guardar":function(){
+
+
+      			},
+      			"cancelar":function(){
+
+      			}
+      		}
+      		
+      	});
+	});
+</script>
+<ul class="proyectos_creado">
+	<li>
+		<ul>
+			<li>
+				<a href="/proyectos/modificarProyecto/{{datos.id}}/" id="modificarProyecto">Modificar</a>
+			</li>
+			<li>
+				<a href="#Agregar" id="LinkAgregar">Agregar Estudiantes</a>
+			</li>
+			<li>
+				<a href="">Agregar Requisitos</a>
+			</li>
+		</ul>
+		<div>
+			<h2>
+				{{datos.titulo}}
+			</h2>
+			<b> Fecha: {{datos.fecha}}</b>
+			<p>
+				{{datos.objetivo}}
+			</p>
+			<p>
+				URL GIT {{datos.urlgithub}}
+			</p>
+		</div>
+	</li>
+	<li>
+
+	</li>
+</ul>
+<div id="Buscar">
+	Usuarios
+</div>

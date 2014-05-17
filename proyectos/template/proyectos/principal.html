@@ -1,0 +1,80 @@
+<script>
+	jQuery(document).ready(function($) {
+		$(".proyectos").tabs();
+		$(".proyectos ul li a").click(function(event) {
+			var href=$(this).attr("url");
+			if(href=="/proyectos/estudiante/"){
+				llamdaAsincrona(href,$("#registrarEstudiante"))
+				var extra=$(this).attr("extra");
+				if(extra!=""){
+					llamdaAsincrona(extra,$("#buscar"))
+				}
+			}else if(href=="/proyectos/crearProyecto/"){
+				llamdaAsincrona(href,$("#proyectosCrear"))
+				llamdaAsincrona("/proyectos/listarProyectos",$("#listar"))
+				var extra=$(this).attr("extra");
+				if(extra!=""){
+					llamdaAsincrona(extra,$("#buscarPro"))
+				}
+			}else if(href==""){
+
+			}
+			
+			
+		});
+	});
+	var llamdaAsincrona=function(href,obj){
+		$.ajax({
+				url: href,
+				type: 'GET',
+				data: {},
+			})
+			.done(function(html) {
+				obj.html(html)
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+	}
+</script>
+<div class="proyectos">
+		<ul>
+			<li>
+				<a href="#estudiante" url="/proyectos/estudiante/" extra="/proyectos/buscarEstudiante/">Crear Estudiante</a>
+			</li>
+			<li>
+				<a href="#proyectos" url="/proyectos/crearProyecto/" extra="/proyectos/buscarProyecto/">Crear Proyecto</a>
+			</li>
+			<li>
+				<a href="#proyectoestudiante" url="/proyectos/relacionar/">Relacionar Proyecto Estudiante</a>
+			</li>
+		</ul>
+	<div id="estudiante">
+		<h2>Estudiante</h2>
+		<a href="/proyectos/uploadList/" onClick="window.open(this.href, this.target, 'width=300,height=400'); return false;">Importar Lista de estudiantes</a>
+		<div id="buscar">
+
+		</div>
+		<div id="registrarEstudiante">
+
+		</div>
+	</div>	
+	<div id="proyectos">
+		<div id="buscarPro">
+
+		</div>
+		<div id="listar">
+
+		</div>
+		<div id="proyectosCrear">
+
+		</div>
+	</div>
+	<div id="proyectoestudiante">
+		relacionar proyecto estudiante
+	</div>
+</div>

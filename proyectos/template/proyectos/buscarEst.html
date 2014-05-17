@@ -1,0 +1,33 @@
+<script>
+	jQuery(document).ready(function($) {
+		$("#id_buscar").on("keyup",function(e){
+			if(e.which!=8){
+				$.ajax({
+					url: '/proyectos/buscarEstudiante/',
+					type: 'POST',
+					data: $("#busqueda").serializeObject()
+				})
+				.done(function(html) {
+					console.log("success");
+					$("#resultados").html(html)
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});	
+			}
+		});
+	});
+</script>
+<div>
+	Buscar:
+	<form action="" method="post" id="busqueda">
+		{%csrf_token%}
+		{{form}}
+	</form>
+</div>
+<div id="resultados">
+
+</div>

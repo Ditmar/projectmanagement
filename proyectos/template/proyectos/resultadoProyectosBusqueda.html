@@ -1,0 +1,83 @@
+<script>
+	jQuery(document).ready(function($) {
+		$(".requerimientos #detalle_proyecto").click(function(event) {
+			event.preventDefault();
+			var id=$(this).attr("idpro");
+			$("#listar").html("")
+			$.ajax({
+				url: '/proyectos/dameproyecto/'+id+"/",
+				type: 'GET',
+				data: {},
+			})
+			.done(function(html) {
+				$("#buscarPro").html(html)
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+		});
+		$(".columna3 #nota").hide()
+		$(".columna3 #ver").click(function(event) {
+			event.preventDefault()
+			if($(this).attr("typo")=='mostrar'){
+				$(this).attr({
+				'typo': 'ocultar'
+				});
+				console.log($(this).attr("typo"))
+					$(this).parent().children('div').show("slow")
+			
+			}else if($(this).attr('typo')=="ocultar"){
+				$(this).attr({
+				'typo': 'mostrar'
+				});
+					$(this).parent().children('div').hide("slow")	
+			}
+			
+		});
+	});
+</script>
+<div id="resultadoLista">
+	<ul>
+		{%for item in lista%}
+		<li class="proyectos_list">
+			<div class="titulo">
+				<h2>{{item.titulo}}</h2>   {{item.fecha}}	Grupo -> {{item.id}}		
+			</div>
+			<div class="columna1">
+				<h3>Objetivos</h3>
+				{{item.objetivo}}
+			</div>
+			<div class="columna2">
+				<h3>Integrantes</h3>
+				<ul>
+				{%for es in item.estudiantes.all%}
+					<li>{{es.Nombres}}</li>
+				{%endfor%}
+				</ul>
+				
+			</div>
+			<div class="columna3">
+				<a href="" id="ver" typo="mostrar">Ver nota</a>
+				<div id="nota">
+					{{item.notaTotal}}
+				</div>	
+			</div>
+			<div>
+				<h3>Requerimientos</h3>
+				<ul class="requerimientos">
+					{%for req in item.requerimientos_set.all%}
+					<li>
+						{{req.nota}}
+					</li>
+					{%endfor%}
+					<a href="" id="detalle_proyecto" idpro={{item.id}}>Detalle</a>
+				</ul>
+			</div>
+		</li>
+		{%endfor%}
+	</ul>
+</div>

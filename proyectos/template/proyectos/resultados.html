@@ -1,0 +1,47 @@
+<script>
+	jQuery(document).ready(function($) {
+		//$("#agregarEstudiante").each(function(index, val) {
+			$(".listaBorrado li div #agregarEstudiante").click(function(event) {
+				event.preventDefault();
+				agregarEstudiante($(this).attr("ids"));
+			});
+		//});
+
+		/*$(".listaBorrado li div a").click(function(event) {
+			event.preventDefault()
+			obj=$(this).parent().parent()
+			console.log(obj)
+			url=$(this).attr("href");
+			console.log(url)
+			$.ajax({
+				url:url,
+				type: 'GET',
+				data: {param1: 'value1'},
+			})
+			.done(function(s) {
+				console.log(obj)
+				obj.hide('slow');
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+		});*/
+	});
+</script>
+<ul class="listaBorrado">
+	{% for item in lista%}
+	<li>
+		{{item.Nombres}} {{item.Apellidos}} 
+		<div>
+			<a href="/" ids="{{item.id}}" id="agregarEstudiante">Agregar</a>
+		</div> 
+		<div>
+			<a href="/proyectos/borrar/{{item.id}}/">Borrar</a>
+		</div>
+	</li>
+	{%endfor%}
+</ul>/

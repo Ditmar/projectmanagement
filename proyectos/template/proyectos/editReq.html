@@ -1,0 +1,33 @@
+<script>
+	jQuery(document).ready(function($) {
+		$("#editformReq").submit(function(event) {
+			var data=$(this).serializeObject()
+			$.ajax({
+				url: '/proyectos/editarreq/',
+				type: 'POST',
+				data: data,
+			})
+			.done(function(response) {
+				if(response.result){
+					autocallback()
+				}
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			
+			return false;
+		});
+	});
+</script>
+<div>
+	<form action="" methos="POST" id="editformReq">
+		{%csrf_token%}
+		{{form}}
+		<input type="submit" value="enviar"/>
+	</form>
+</div>

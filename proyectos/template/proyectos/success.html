@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{%block container%}
+	<b>
+		Subir Lista:
+	</b>
+	<ul>
+	{% for item in estudiantes %}
+		<li>
+			{{item.paterno}} {{item.materno}} {{item.nombre}}
+		</li>
+	{% endfor %}
+	</ul>
+{%endblock%}

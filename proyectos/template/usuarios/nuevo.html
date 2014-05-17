@@ -1,0 +1,29 @@
+<script>
+	jQuery(document).ready(function($) {
+		$("#form").submit(function(event) {
+			var formulario=$(this).serializeObject()
+			$.ajax({
+				url: '/usuario/nuevo/',
+				type: 'POST',
+				data: formulario,
+			})
+			.done(function(serverresponse) {
+				if(serverresponse.type==undefined &&serverresponse){
+					callback(serverresponse)
+				}
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+			return false;
+		});
+	});
+</script>
+<form action="" method="POST" id="form">
+	{% csrf_token %}
+	{{form.as_ul}}
+	<input type="submit" value="enviar"/>
+</form>
