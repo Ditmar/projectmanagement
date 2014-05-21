@@ -1,3 +1,87 @@
+@font-face
+{
+    font-family:'unafuente';
+    src: url('/static/fonts/Quicksand.otf');
+}
+@font-face
+{
+    font-family:'unafuente';
+    src: url('/static/fonts/Quicksand-Bold.otf');
+    font-weight:bold;
+}
+body{
+    padding:0px;
+        font-family:"unafuente";
+    background-color:#3498db;
+}
+#minimenu{
+    visibility:hidden;
+
+}
+#minimenu ul li div{
+    color:#fff;
+    font-size:25px;
+}
+#minimenu ul li{
+    display:inline-block;
+    vertical-align:top;
+    padding:5px;
+    background-color: #2980b9;
+    cursor:pointer;
+    -webkit-transition: all 200ms ease-out;
+    -moz-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+}
+#minimenu ul li:hover{
+    margin-top:-5px;
+    box-shadow:0px 5px 5px #333;
+}
+#minimenu ul li a{
+    color:#fff;
+    text-decoration: none;
+} 
+#mainmanu{
+    width:50%;
+    margin: 0 auto;
+
+}
+#mainmanu ul{
+    margin-top:30%;
+}
+#mainmanu ul li{
+    width:150px;
+    height: 150px;
+    list-style:none;
+    display: inline-block;
+    vertical-align:top;
+    cursor:pointer;
+    background-color: #2980b9;
+    -webkit-transition: all 200ms ease-out;
+    -moz-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+}
+#mainmanu ul li:hover{
+    margin-top:-5px;
+    box-shadow:0px 10px 10px #000;
+}
+#mainmanu ul li div{
+    padding:10px;
+    width:100%;
+    color:white;
+    font-size:90px;
+    text-align: center;
+}
+#mainmanu ul li a{
+    font-size:20px;
+    font-family: "unafuente";
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    color:#fff;
+    
+}
 .elemento1,.elemento2,.elemento3,.elemento4,.elemento5,.elemento6,.elemento7{
     padding:5px;
     background-color:#BD52FA;
@@ -5,6 +89,8 @@
     margin-top:8px;
     color:#fff;
     list-style: none;
+    font-family:"unafuente";
+    
 }
 .elemento2{
     background-color:#000;
@@ -227,4 +313,84 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', end
     color:#333333;
     padding: 10px
 
+}
+#transitionEfect{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  z-index: 9999;
+  background:#000;
+  opacity:0;
+  visibility:hidden;
+}
+#principalProyectos{
+    border-radius:10px;
+    background-color:#ffb273;
+    min-height:200px;
+}
+#menuProyectos{
+    border:3px solid #ffb263;
+    border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+background-color:#A64b00;
+}
+#menuProyectos li{
+    display:inline-block;
+    vertical-align:top;
+    margin-left: 20px;
+    padding:15px;
+}
+#menuProyectos li:hover{
+    display:inline-block;
+    vertical-align:top;
+    background-color:#000;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+}
+#menuProyectos li div{
+    color:#fff;
+    font-size:33px;
+}
+#menuProyectos li a{
+    color:#fff;
+    text-decoration: none;
+}
+#submenuPro li div{
+    color:#fff;
+    font-size: 24px;
+}
+#submenuPro li a{
+    color:#fff;
+    text-decoration:none;
+}
+#buscadorPro{
+    width:50%;
+    margin:0 auto;
+    border-radius:15px;
+    background-color:#fff;
+    margin-bottom:30px;
+}
+#buscadorPro form{ 
+    padding:20px;
+}
+#buscadorPro form input{
+    width:500px;
+}
+.header{
+    -webkit-border-top-left-radius: 15px;
+-webkit-border-top-right-radius: 15px;
+-moz-border-radius-topleft: 15px;
+-moz-border-radius-topright: 15px;
+border-top-left-radius: 15px;
+border-top-right-radius: 15px;
+
+background-color:#a66f00;
+padding:10px;
+color:#fff;
+font-size:15px;
 }

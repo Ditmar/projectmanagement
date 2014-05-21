@@ -4,33 +4,42 @@
 		<title>
 			Home Work
 		</title>
-		<link href="/static/css/ui-lightness/jquery-ui-1.10.4.custom.css" rel="stylesheet"/>
 		<link href="/static/css/sitio.css" rel="stylesheet"/>
+		<link href="/static/css/ui-lightness/jquery-ui-1.10.4.custom.css" rel="stylesheet"/>
+		<link href="/static/css/ionicons.css" rel="stylesheet"/>
 		<script src="/static/js/jquery-2.1.0.min.js" languaje="javascript"></script>
 		<script src="/static/js/serializeObject.js"></script>
 		<script src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
 		<script>
-			$(document).ready(function(){
-
+		jQuery(document).ready(function($) {
+				var colores=['#ff7400','#ff1e00','#4a11ae','#2DD700']
+				$("#minimenu li").each(function(index, val) {
+					$(this).css("background",colores[index]);
+					$(this).attr('colores', colores[index]);
+				});
+				$("#minimenu li").click(function(event) {
+					var urlAttrib=$(this).children('a').attr("href");
+					transicionAjax(function(e){
+					},$("#container"),urlAttrib,'GET',{},$(this).attr('colores'));
+				});
+				$("#minimenu li a").click(function(event) {
+					event.preventDefault();
+				});
+				$("#menu li").each(function(index, val) {
+					 /* iterate through array or object */
+					$(this).css("background",colores[index]);
+					$(this).attr('colores', colores[index]);
+				});
 				$("#menu li a").on("click",function(e){
-					var urlAttrib=$(this).attr("href");
+					e.preventDefault();
+					
+				});
+				$("#menu li").on("click",function(e){
+					var urlAttrib=$(this).children('a').attr("href");
 					console.log(urlAttrib)
 					e.preventDefault()
-					$.ajax({
-						url: urlAttrib,
-						type: 'GET',
-						data: {},
-					})
-					.done(function(html) {
-						$("#container").html(html)
-					})
-					.fail(function() {
-						console.log("error");
-					})
-					.always(function() {
-						console.log("complete");
-					});
-					
+					transicionAjax(function(e){
+					},$("#container"),urlAttrib,'GET',{},$(this).attr('colores'));
 				});
 			});
 			callback=function(html){
@@ -39,32 +48,110 @@
 				$("#container").hide()
 				$("#container").show("slow")
 			}
+			transicionAjax=function(termina,scope,url,type,data,color)
+			{
+				$("#transitionEfect").css({
+					'visibility':'visible',
+					'background':color
+				});
+				$("#transitionEfect").animate({
+					'opacity':1},
+					500, function() {
+						$.ajax({
+							url: url,
+							type: type,
+							data: data,
+						})
+						.done(function(result) {
+							if(scope!=null){
+								scope.html(result)
+								$("body").css({
+									'background': color
+								});
+								$("#transitionEfect").animate({
+									'opacity': 0},
+									500, function() {
+										termina();
+									$("#transitionEfect").css({
+										'visibility':'hidden'
+									});
+								});
+							}
+						})
+						.fail(function() {
+							console.log("error");
+						})
+						.always(function() {
+							console.log("complete");
+						});
+				});
+			}
 		</script>
 	</head>
 	<body>
-		<nav>
-			<ul id="menu">
+		<div id="transitionEfect">
+				
+		</div>
+		<nav id="minimenu">
+			<ul>
 				<li>
+					<div class="ion-ios7-paperplane"></div>
 					<a href="/proyectos/principal/" id="Proyectos">Proyectos</a>
  				</li>
-				<li>
-					<a href="/usuario/nuevo/" id="registrar">Registrar Usuario Nuevo</a>
+				<li >
+					<div class="ion-android-social-user"></div>
+					<a href="/usuario/nuevo/" id="registrar">Usuarios</a>
+ 				</li>
+ 				<li>
+ 					<div class="ion-information-circled"></div>
+					<a href="/usuario/nuevo/" id="registrar">Reportes</a>
  				</li>
 				{% if user.is_anonymous%}
-				<li>
+				<li >
+					<div class="ion-log-in"></div>
 					<a href="/usuario/login/" id="logear">Logear</a>
 				</li>
 				{%endif%}
 				{% if not user.is_anonymous%}
 				<li>
+					<div class="ion-log-in"></div>
 						<a href="/usuario/logout/" id="logear">LogOut</a>	
 				</li>
 				{%endif%}
 			</ul>
 		</nav>
 		<div id="container">
-			{% block container%}
+		<nav id="mainmanu">
+			<ul id="menu">
+				<li>
+					<div class="ion-ios7-paperplane"></div>
+					<a href="/proyectos/principal/" id="Proyectos">Proyectos</a>
+ 				</li>
+				<li >
+					<div class="ion-android-social-user"></div>
+					<a href="/usuario/nuevo/" id="registrar">Usuarios</a>
+ 				</li>
+ 				<li>
+ 					<div class="ion-information-circled"></div>
+					<a href="/usuario/nuevo/" id="registrar">Reportes</a>
+ 				</li>
+				{% if user.is_anonymous%}
+				<li >
+					<div class="ion-log-in"></div>
+					<a href="/usuario/login/" id="logear">Logear</a>
+				</li>
+				{%endif%}
+				{% if not user.is_anonymous%}
+				<li>
+					<div class="ion-log-out"></div>
+						<a href="/usuario/logout/" id="logear">LogOut</a>	
+				</li>
+				{%endif%}
+			</ul>
+		</nav>
+		{% block container%}
 			{% endblock %}
 		</div>
+		
 	</body>
 </html>

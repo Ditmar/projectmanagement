@@ -1,0 +1,143 @@
+/******************************
+EXAMPLE STYLES
+******************************/
+.noscroll {
+  height: 100%;
+  width: 100%;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  z-index: 9999;
+  visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  display: block;
+  width: 80%;
+  max-width: 740px;
+  margin: 120px auto 0;
+}
+
+.close {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  font-size: 36px;
+}
+
+/* Main Nav */
+.nav {
+  width: 80%;
+  max-width: 420px;
+  margin: 90px auto 90px;
+  font-size: 33px;
+}
+
+.nav-el {
+  position: relative;
+  display: inline-block;
+  float: right;
+  width: 47.5%;
+  padding-bottom: 47.5%;
+  color: white;
+  z-index: 10;
+  text-align: center;
+
+  /* Placements */
+}
+
+.nav-el span{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  line-height: 0;
+  margin-left: -0.5em;
+}
+.nav-el h1{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  line-height: 0;
+  margin-left: -0.5em;
+  font-family:"unafuente";
+  border:1px solid #000;
+}
+.nav-el.active_reverse {
+  z-index: 11;
+  background: transparent;
+}
+.nav-el.inactive {
+  pointer-events: none;
+  cursor: default;
+}
+.nav-el:nth-of-type(2n+1) {
+  float: left;
+}
+.nav-el:nth-of-type(n+3) {
+  margin-top: 5%;
+}
+
+/* A fix for Safari and .nav-el z-index:
+	when animation starts, the square appear bellow other .nav-el
+  	even if it has a bigger z-index */
+.demo3_cont {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Space adjustment  */
+@media only screen and (min-width: 520px) {
+  .nav {
+    font-size: 48px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .overlay .wrap {
+    margin: 150px auto 0;
+  }
+}
+
+/* demo2 */
+body {
+  background: #3498db;
+}
+body .button {
+  color: #3498db;
+  background: #2980b9;
+}
+body .button:hover {
+  background-color: #20638f;
+}
+body .overlay {
+  background-color: #20638f;
+}
+body .nav-el {
+  background-color: #2980b9;
+  transition: background-color .3s ease-in;
+  -moz-transition: background-color .3s ease-in;
+  -webkit-transition: background-color .3s ease-in;
+}
+body .nav-el:hover, body.dm-demo2 .nav-el.active {
+  background: #20638f;
+}
+body .nav-el.active {
+  z-index: 11;
+}
+body .backtoarticle {
+  border-color: #2980b9;
+  color: #2980b9;
+}
+body .backtoarticle:hover {
+  color: #20638f;
+  border-color: #20638f;
+}

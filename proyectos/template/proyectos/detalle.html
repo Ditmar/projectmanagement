@@ -69,6 +69,9 @@
       		hide: {
         		effect: "explode",
         		duration: 500
+      		},
+      		close: function( event, ui ) {
+      			autocallback();
       		}
     	});
 		$("#form_archivo").dialog({
@@ -176,7 +179,7 @@
 				data: {},
 			})
 			.done(function(html) {
-				$("#buscarPro").html(html)
+				$("#containerProyectos").html(html)
 			})
 			.fail(function() {
 				console.log("error");
@@ -208,9 +211,9 @@
 				<a href="" id="addEstudiante">Agregar Estudiante</a>
 			</div>
 			<div class="columna3">
-				<a href="" id="ver" typo="mostrar">Ver nota</a>
+				<a href="" id="ver" typo="mostrar">Avance</a>
 				<div id="nota">
-					{{item.notaTotal}}
+					{{item.notaTotal}}%
 				</div>	
 			</div>
 			<div>

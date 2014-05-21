@@ -10,7 +10,7 @@
 				data: {},
 			})
 			.done(function(html) {
-				$("#buscarPro").html(html)
+				$("#containerProyectos").html(html)
 			})
 			.fail(function() {
 				console.log("error");
@@ -55,7 +55,7 @@
 				<h3>Integrantes</h3>
 				<ul>
 				{%for es in item.estudiantes.all%}
-					<li>{{es.Nombres}}</li>
+					<li>{{es.Nombres}} {{es.Apellidos}}</li>
 				{%endfor%}
 				</ul>
 				
@@ -63,7 +63,7 @@
 			<div class="columna3">
 				<a href="" id="ver" typo="mostrar">Ver nota</a>
 				<div id="nota">
-					{{item.notaTotal}}
+					{{item.notaTotal}}%
 				</div>	
 			</div>
 			<div>
