@@ -10,6 +10,21 @@ import pdb
 import os
 from proyectos.settings import RUTA_PROYECTO
 import csv
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from proyectos.settings import MEDIA_ROOT
+
+import StringIO
+import urllib2
+import base64
+import pyRXPU
+import preppy
+import urllib2
+import pdb
+from xml.sax.saxutils import escape, unescape
+from rlextra.radxml.xmlutils import TagWrapper
+from rlextra.radxml.html_cleaner import cleanInline
+from rlextra.rml2pdf import rml2pdf
 # Create your views here.
 def registrarEstudiantes(request):
 	if request.method=="POST":
@@ -230,3 +245,42 @@ def uploadsuccess(request):
 		return render_to_response("proyectos/success.html",{"estudiantes":lista},RequestContext(request))
 	else:
 		return HttpResponseRedirect("/proyectos/uploadList/")
+def importRequerimientos(request):
+	lista =Requerimientos.objects.filter(proyecto_id=request.session["idPro"])
+	url=os.path.join(MEDIA_ROOT,"reportes\\reporte.pdf")
+	c=canvas.Canvas(url,pagesize=letter)
+	c.setLineWidth(.3)
+	c.setFont('Helvetica',20)
+	c.drawString(120,750,"Requerimientos")
+	alto=700
+	c.setFont('Helvetica',12)
+	for item in lista:
+		c.drawString(100,alto,item.descripcion)
+		c.line(90,alto-3,400,alto-3)
+		alto=alto-30
+	c.save()
+	return HttpResponseRedirect("/media/reportes/reporte.pdf")
+def reportes(request):
+	estudiantes=Estudiantes.objects.all()
+	pdb.set_trace()
+	pdf=create_pdf(estudiantes,"plantilla.prep")
+	folderPdf=os.path.join(RUTA_PROYECTO,"static\\reportes\\estudiantes.pdf")
+	#pdb.set_trace()
+	open(folderPdf,'w+').write(pdf)
+	return HttpResponseRedirect("/static/reportes/estudiantes.pdf")
+
+def create_pdf(catalog, template):
+	#pdb.set_trace()
+	DATA_DIR=os.path.join(RUTA_PROYECTO,"static\\data")
+	RML_DIR = os.path.join(RUTA_PROYECTO,"static\\rml")
+	templateName = os.path.join(RML_DIR, template)
+	template = preppy.getModule(templateName)
+	namespace = {
+		'estudiantes':catalog,
+		'RML_DIR': RML_DIR
+		}
+	rml = template.getOutput(namespace)
+	open(os.path.join(DATA_DIR,'latest.rml'), 'w+').write(rml)
+	buf = StringIO.StringIO()
+	rml2pdf.go(rml, outputFileName=buf)
+	return buf.getvalue()

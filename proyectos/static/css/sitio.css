@@ -13,6 +13,8 @@ body{
     padding:0px;
         font-family:"unafuente";
     background-color:#3498db;
+    font-size:18px;
+
 }
 #minimenu{
     visibility:hidden;
@@ -393,4 +395,9 @@ background-color:#a66f00;
 padding:10px;
 color:#fff;
 font-size:15px;
+}
+#tituloProyectos{
+    font-family:'unafuente';
+    font-size:30px;
+    font-weight:bold;
 }
