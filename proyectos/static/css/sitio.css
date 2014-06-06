@@ -400,6 +400,7 @@ font-size:15px;
     font-family:'unafuente';
     font-size:30px;
     font-weight:bold;
+<<<<<<< HEAD
 }
 .historia_seg li{
     padding:7px;
@@ -413,4 +414,6 @@ font-size:15px;
     padding:5px;
     background-color:#ff0000;
     color:#fff;
+=======
+>>>>>>> cfba0ed50a622a41419553b9f1830197cee24583
 }
