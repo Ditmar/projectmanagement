@@ -2,29 +2,6 @@
 	jQuery(document).ready(function($) {
 		$("#minimenu").css({
 			'visibility': 'visible'});
-		//$(".proyectos").tabs();
-
-		/*$("#submenuPro li a").click(function(event) {
-			var href=$(this).children('a').attr("url");
-			if(href=="/proyectos/estudiante/"){
-				llamdaAsincrona(href,$("#registrarEstudiante"))
-				var extra=$(this).attr("extra");
-				if(extra!=""){
-					llamdaAsincrona(extra,$("#buscar"))
-				}
-			}else if(href=="/proyectos/crearProyecto/"){
-				llamdaAsincrona(href,$("#proyectosCrear"))
-				llamdaAsincrona("/proyectos/listarProyectos",$("#listar"))
-				var extra=$(this).attr("extra");
-				if(extra!=""){
-					llamdaAsincrona(extra,$("#buscarPro"))
-				}
-			}else if(href==""){
-
-			}
-			
-			
-		});*/
 		//default View
 		var llamdaAsincrona=function(href,obj){
 		$("#containerProyectos").animate({

@@ -1,11 +1,11 @@
 <script>
-	jQuery(document).ready(function($) {
+	$(document).ready(function() {
 		$("#editformReq").submit(function(event) {
 			var data=$(this).serializeObject()
 			$.ajax({
 				url: '/proyectos/editarreq/',
 				type: 'POST',
-				data: data,
+				data: data
 			})
 			.done(function(response) {
 				if(response.result){

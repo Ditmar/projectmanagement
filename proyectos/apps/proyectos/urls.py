@@ -22,6 +22,6 @@ urlpatterns = patterns('',
     url(r'^borrarSeq/(?P<id>\d+)/$',borrarSeq),
     url(r'^editarhistorial/(?P<id>\d+)/$',editarhistorial),
     url(r'^uploadList/$',uploadFile),
-    url(r'^uploadList/exito$',uploadsuccess)
-    
+    url(r'^uploadList/exito$',uploadsuccess),
+    url(r'^reporte/$',reporte)  
 )

@@ -59,8 +59,8 @@
     	$("#requerimientoHistoria").dialog({
       		autoOpen: false,
       		modal:true,
-      		width:600,
-      		height:500,
+      		width:700,
+      		height:600,
       		title:"Historial",
       		show: {
         		effect: "blind",
@@ -170,6 +170,24 @@
 			var id=$(this).attr("idEs");
 			AsincCallForm(false,"/proyectos/BorrarRel/"+id+"/"+$("#add_req").attr("idPro")+"/","GET",{})
 		});
+		grafica=function(){
+			//console.log($("#reqord li"))
+			$("#reqord li .notaReq").each(function(index) {
+				data=[]
+				var numero=$(this).attr('value').replace(',','.')
+				var castNumber=Number(numero)
+				var falta=100-castNumber
+				obj1={value:castNumber,color:"#F38630"}
+				obj2={value:falta,color:"#69D2E7"}
+				data.push(obj1)
+				data.push(obj2)
+				var myPie = new Chart(document.getElementById("canvasChart_"+index).getContext("2d")).Pie(data);	
+			});	
+			
+
+		}
+		grafica()
+		
 		autocallback=function(){
 			var id=$("#add_req").attr("idpro");
 			$("#listar").html("")
@@ -194,8 +212,7 @@
 	<ul>
 		<li class="proyectos_list">
 			<div class="titulo">
-
-				<h2>{{item.titulo}}</h2>   {{item.fecha}}	{{item.id}}	
+				<div id="tituloProyectos">{{item.titulo}}</div>   {{item.fecha}}	{{item.id}}	
 			</div>
 			<div class="columna1">
 				<h3>Objetivos</h3>
@@ -238,29 +255,41 @@
 					{%endfor%}
 				</ul>
 			</div>
+			<div>
+				<a href="/proyectos/reporte/">Imprimir</a>
+			</div>
 		</li>
 		<li class="proyectos_list">
 			<h2>Lista de Requerimientos</h2>
 			Opciones
 			<ul>
 				<li><a href="#" id="add_req" idPro="{{item.id}}">Agregar Nuevo</a></li>
-				<li>Total ponderado {{ponderado}}</li>
+				<li>
+					{%if complete%}
+						Total ponderado {{ponderado}}%
+					{%else%}
+						<div id="alerta">
+							Alerta la ponderación no es 100% si no de {{ponderado}}% 
+						</div>
+					{%endif%}
+					
+				</li>
 			</ul>
 			<div id="form_add"></div>
-			<ul>
+			<ul id="reqord">
 				{%for req in item.requerimientos_set.all%}
 					<li class="{% cycle 'elemento1' 'elemento2' 'elemento3' 'elemento4' 'elemento5' 'elemento6' 'elemento7' %}">
 						<div class="descripcionReq">{{req.descripcion}}</div>
-						<div class="notaReq">{{req.nota}}%</div>
+						<div class="notaReq" value="{{req.nota}}">{{req.nota}}%</div>
 						<div class="criterioReq">{{req.criterio}}</div>
+						<canvas id="canvasChart_{{forloop.counter0}}"></canvas>
 						<ul class="opcionesReq">
 							<li><a href="" id="borrarReq" idreq="{{req.id}}"></a></li>
-						
 							<li><a href="" id="historial" idreq="{{req.id}}"></a></li>
 							<li><a href="" id="editarReq" idreq="{{req.id}}"></a></li>
 						</ul>	
 					</li>
-					{%endfor%}
+				{%endfor%}
 			</ul>
 		</li>
 	</ul>

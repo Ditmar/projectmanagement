@@ -10,6 +10,9 @@ import pdb
 import os
 from proyectos.settings import RUTA_PROYECTO
 import csv
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from proyectos.settings import MEDIA_ROOT
 # Create your views here.
 def registrarEstudiantes(request):
 	if request.method=="POST":
@@ -94,7 +97,9 @@ def dameproyecto(request,id):
 	total=0
 	for item in proyecto.requerimientos_set.all():
 		total=total+item.criterio
-	return render_to_response("proyectos/detalle.html",{"item":proyecto,"ponderado":total},RequestContext(request))
+	if total==100:
+		return render_to_response("proyectos/detalle.html",{"item":proyecto,"complete":True,"ponderado":total},RequestContext(request))
+	return render_to_response("proyectos/detalle.html",{"item":proyecto,"complete":False,"ponderado":total},RequestContext(request))
 #Agregar nuevo requerimiento
 def addReq(request,id):
 	if request.method=="POST":
@@ -230,3 +235,57 @@ def uploadsuccess(request):
 		return render_to_response("proyectos/success.html",{"estudiantes":lista},RequestContext(request))
 	else:
 		return HttpResponseRedirect("/proyectos/uploadList/")
+
+def reporte(request):
+	if request.session["idPro"]:
+		from reportlab.pdfgen import canvas
+		from reportlab.lib.pagesizes import letter	
+		from reportlab.platypus import Paragraph,SimpleDocTemplate,Spacer
+		from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+		from reportlab.lib.enums import TA_JUSTIFY
+		pro=Proyectos.objects.get(id=request.session["idPro"])
+		url=os.path.join(MEDIA_ROOT,"reportes\\proyecto.pdf")
+		#c=canvas.Canvas(url,pagesize=letter)
+		stilo=getSampleStyleSheet()
+		stilo.add(ParagraphStyle(name="miestilo",alignment=TA_JUSTIFY))
+		c=SimpleDocTemplate(url,pagesize=letter,
+			rightMargin=70,
+			leftMargin=72,
+			topMargin=72,
+			bottomMargin=18)
+		lista=pro.requerimientos_set.all()
+		parrafo=""
+		Story=[]
+		for item in lista:
+			parrafo="%s %s"%(parrafo,item.descripcion)
+		parrafo="<font size=10>%s</font>"%(parrafo)
+		Story.append(Paragraph(parrafo,stilo["miestilo"]))
+		Story.append(Spacer(1,50))
+		Story.append(Paragraph("ESTA ES UNA PRUEBA",stilo["miestilo"]))
+		
+		c.build(Story)
+		#c.setFont("Helvetica",20)
+		#c.drawString(100,720,pro.titulo)
+		#c.line(0,718,700,718)
+		#c.setFont("Helvetica",10)
+		#c.drawString(40,705,"Objetivo")
+		#c.drawString(50,690,pro.objetivo)
+		#c.line(40,700,500,700)
+		#c.line(500,700,500,680)
+		#c.line(500,680,40,680)
+		#c.line(40,680,40,700)
+		#c.setFont("Helvetica",15)
+		#c.drawString(520,680,"%s %s"%(pro.notaTotal,"%"))
+		#lista=Requerimientos.objects.filter(proyecto=pro)
+		#lista=pro.requerimientos_set.all()
+		#altura=650
+		#c.setFont("Helvetica",10)
+		#for item in lista:
+			#c.drawString(50,altura,item.descripcion)
+			#for seg in item.seguimiento_set.all():
+				#altura=altura-10
+				#c.drawString(100,altura,seg.observacion)
+			#altura=altura-10
+		#c.save()
+		return HttpResponseRedirect("/media/reportes/proyecto.pdf")
+	return HttpResponseRedirect("/")
